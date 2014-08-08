@@ -1,0 +1,2 @@
+defmodule Hippocrene do
+end
