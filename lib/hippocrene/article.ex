@@ -76,6 +76,6 @@ defmodule Hippocrene.Article do
   end
 
   def begin(do: block) do
-    block # TODO
+    Hippocrene.HtmlRenderer.render(block) # TODO
   end
 end

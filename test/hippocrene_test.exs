@@ -3,6 +3,8 @@ defmodule HippocreneTest do
 
   test "eval article.exs" do
     file = "test/sample/article.exs"
-                # assert Code.eval_file(file) == expected
+    {result, _} = Code.eval_file(file)
+
+    IO.puts result
   end
 end
