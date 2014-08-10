@@ -22,6 +22,10 @@ defmodule Hippocrene.HtmlRenderer do
     "<pre class='#{language}'><code>\n#{render content, h_num}\n</code></pre>"
   end
 
+  defp render({:cite, content}, h_num) do
+    "<blockquote>\n#{render content, h_num}\n</blockquote>"
+  end
+
   defp render({:ul, content}, h_num) do
     "<ul>\n#{render content, h_num}\n</ul>"
   end
@@ -32,6 +36,20 @@ defmodule Hippocrene.HtmlRenderer do
 
   defp render({:li, content}, h_num) do
     "<li>#{render content, h_num}</li>"
+  end
+
+  defp render({:table, content}, h_num) do
+    "<table>\n#{render content, h_num}\n</table>"
+  end
+
+  defp render({:th, list}, h_num) do
+    ths = Enum.map(list, fn (item) -> "<th>#{item}</th>" end) |> Enum.join("\n")
+    "<tr>\n#{ths}\n</tr>"
+  end
+
+  defp render({:td, list}, h_num) do
+    tds = Enum.map(list, fn (item) -> "<td>#{item}</td>" end) |> Enum.join("\n")
+    "<tr>\n#{tds}\n</tr>"
   end
 
   defp render(content, _) when is_binary(content), do: content

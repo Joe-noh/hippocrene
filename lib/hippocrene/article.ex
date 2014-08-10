@@ -5,6 +5,10 @@ defmodule Hippocrene.Article do
 
   defstruct title: "", date: {1970, 1, 1}, body: ""
 
+  def begin(do: block) do
+    Hippocrene.HtmlRenderer.render(block)
+  end
+
   def title(title),          do: %__MODULE__{          title: title}
   def title(article, title), do: %__MODULE__{article | title: title}
 
@@ -50,6 +54,15 @@ defmodule Hippocrene.Article do
     [{:code, language, content} | acc]
   end
 
+  def cite(acc \\ [], content)
+
+  def cite(acc, do: content) when is_list(content) do
+    [{:cite, Enum.reverse content} | acc]
+  end
+  def cite(acc, do: content) do
+    [{:cite, content} | acc]
+  end
+
   def list(acc \\ [], type, content)
 
   def list(acc, :bullet, do: content) when is_list(content) do
@@ -75,7 +88,11 @@ defmodule Hippocrene.Article do
     [{:li, content} | acc]
   end
 
-  def begin(do: block) do
-    Hippocrene.HtmlRenderer.render(block) # TODO
-  end
+  def table(acc \\ [], content)
+
+  def table(acc, do: content), do: [{:table, Enum.reverse content} | acc]
+  def table(acc, do: content), do: [{:table,              content} | acc]
+
+  def header(acc \\ [], list), do: [{:th, list} | acc]
+  def row(   acc \\ [], list), do: [{:td, list} | acc]
 end
