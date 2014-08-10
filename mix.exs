@@ -5,6 +5,7 @@ defmodule Hippocrene.Mixfile do
     [app: :hippocrene,
      version: "0.0.1",
      elixir: "~> 0.15.0",
+     package: package,
      deps: deps]
   end
 
@@ -13,6 +14,15 @@ defmodule Hippocrene.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [applications: [:logger]]
+  end
+
+  defp package do
+    [
+      files: ["lib", "vendor", "mix.exs", "README*", "LICENSE*"],
+      contributors: ["Joe Honzawa"],
+      licenses: ["MIT"],
+      links: %{"Github" => "https://github.com/Joe-noh/hippocrene"}
+    ]
   end
 
   # Dependencies can be hex.pm packages:
