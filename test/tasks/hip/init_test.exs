@@ -1,5 +1,6 @@
 defmodule Tasks.Hip.InitTest do
   use ExUnit.Case
+  import ExUnit.CaptureIO
 
   setup_all do
     on_exit fn ->
@@ -21,5 +22,12 @@ defmodule Tasks.Hip.InitTest do
     assert File.regular?("./src/articles/example.exs")
     assert File.regular?("./src/assets/css/normalize.css")
     assert File.regular?("./src/assets/js/jquery.min.js")
+  end
+
+  test "abort if thre is a src directory" do
+    File.mkdir "./src"
+    message = capture_io :stderr, fn -> Mix.Tasks.Hip.Init.run [] end
+
+    assert message =~ "already exist"
   end
 end

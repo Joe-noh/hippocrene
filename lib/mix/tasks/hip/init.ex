@@ -2,11 +2,15 @@ defmodule Mix.Tasks.Hip.Init do
   use Mix.Task
 
   def run(_) do
-    create_directories
+    if File.exists?("./src") do
+      Mix.Shell.IO.error "Oops! 'src' directory already exists! Please do rm!"
+    else
+      create_directories
 
-    initialize_config_file
-    initialize_example_article
-    initialize_assets
+      initialize_config_file
+      initialize_example_article
+      initialize_assets
+    end
   end
 
   defp create_directories do
