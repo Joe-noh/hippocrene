@@ -19,12 +19,12 @@ defmodule ArticleTest do
   end
 
   test "begin" do
-    assert (begin     "content") == {:begin, ["content"]}
-    assert (begin do: "content") == {:begin, ["content"]}
+    assert (begin     "content") == "content"
+    assert (begin do: "content") == "content"
     assert (begin do
       "content"
       "content"
-    end) == {:begin, ["content", "content"]}
+    end) == ["content", "content"]
   end
 
   test "body" do
@@ -132,7 +132,7 @@ defmodule ArticleTest do
         end
       end
     end
-    expected = {:begin, [
+    expected = [
       title: "The Title",
       date: {2014, 8, 9},
       author: "Joe Honzawa",
@@ -150,7 +150,7 @@ defmodule ArticleTest do
           ]
         ]}
       ]
-    ]}
+    ]
 
     assert article == expected
   end

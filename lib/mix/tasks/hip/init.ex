@@ -28,7 +28,17 @@ defmodule Mix.Tasks.Hip.Init do
 
   defp initialize_example_article do
     File.write! "./src/articles/example.exs", """
-    skel
+    use Hippocrene
+
+    begin do
+      title "Title"
+      date  2014, 8, 9
+      author "Joe Honzawa"
+      body do
+        "Hello"
+        "World"
+      end
+    end
     """
   end
 

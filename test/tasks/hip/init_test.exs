@@ -3,9 +3,8 @@ defmodule Tasks.Hip.InitTest do
   import ExUnit.CaptureIO
 
   setup do
-    on_exit fn ->
-      TestHelper.clean
-    end
+    on_exit fn ->TestHelper.clean end
+    :ok
   end
 
   test "make directories" do
