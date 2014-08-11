@@ -1,98 +1,71 @@
 defmodule Hippocrene.Article do
-  import Hippocrene.Utils
-  alias Hippocrene.Article
-  alias Hippocrene.Article.Block
 
-  defstruct title: "", date: {1970, 1, 1}, body: ""
+  def title(title), do: {:title, title}
 
-  def begin(do: block) do
-    Hippocrene.HtmlRenderer.render(block)
+  def date(year, month, day),         do: {:date, {year, month, day}}
+  def date(date) when is_tuple(date), do: {:date, date}
+
+  def author(author), do: {:author, author}
+
+  @tags [:begin, :body, :par, :cite, :code, :item, :table]
+  Enum.each @tags, fn (tag) ->
+    defmacro unquote(tag)(do: {:__block__, _, blocks}) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), unquote(blocks)}
+    end
+
+    defmacro unquote(tag)(do: line) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), [unquote line]}
+    end
+
+    defmacro unquote(tag)(line) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), [unquote line]}
+    end
   end
 
-  def title(title),          do: %__MODULE__{          title: title}
-  def title(article, title), do: %__MODULE__{article | title: title}
+  @tags_with_one_arg [:section, :code]
+  Enum.each @tags_with_one_arg, fn (tag) ->
+    defmacro unquote(tag)(arg, do: {:__block__, _, blocks}) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), unquote(arg), unquote(blocks)}
+    end
 
-  def date(y, m, d),          do: %__MODULE__{          date: {y, m, d}}
-  def date(article, y, m, d), do: %__MODULE__{article | date: {y, m, d}}
+    defmacro unquote(tag)(arg, do: line) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), unquote(arg), [unquote line]}
+    end
 
-  def date(date),          do: %__MODULE__{          date: date}
-  def date(article, date), do: %__MODULE__{article | date: date}
-
-  def body(article \\ %Article{}, content)
-
-  def body(article, do: content) when is_list(content) do
-    %Article{article | body: Enum.reverse content}
-  end
-  def body(article, do: content) do
-    %Article{article | body: content}
-  end
-
-  def section(acc \\ [], section_title, content)
-
-  def section(acc, section_title, do: content) when is_list(content) do
-    [{:section, section_title, Enum.reverse content} | acc]
-  end
-  def section(acc, section_title, do: content) do
-    [{:section, section_title, content} | acc]
+    defmacro unquote(tag)(arg, line) do
+      tag = unquote(tag)
+      quote do: {unquote(tag), unquote(arg), [unquote line]}
+    end
   end
 
-  def par(acc \\ [], content)
+  # define list(:bullet) and list(:numbered)
+  @list_styles [:bullet, :numbered, "bullet", "numbered"]
+  Enum.each @list_styles, fn (style) ->
+    style_atom = if is_atom(style) do
+      style
+    else
+      String.to_atom style
+    end
 
-  def par(acc, do: content) when is_list(content) do
-    [{:par, Enum.reverse content} | acc]
-  end
-  def par(acc, do: content) do
-    [{:par, content} | acc]
-  end
+    defmacro list(unquote(style), do: {:__block__, _, blocks}) do
+      style_atom = unquote(style_atom)
+      quote do: {unquote(style_atom), unquote(blocks)}
+    end
 
-  def code(acc \\ [], language, content)
-
-  def code(acc, language, do: content) when is_list(content) do
-    [{:code, language, Enum.reverse content} | acc]
-  end
-  def code(acc, language, do: content) do
-    [{:code, language, content} | acc]
-  end
-
-  def cite(acc \\ [], content)
-
-  def cite(acc, do: content) when is_list(content) do
-    [{:cite, Enum.reverse content} | acc]
-  end
-  def cite(acc, do: content) do
-    [{:cite, content} | acc]
+    defmacro list(unquote(style), do: line) do
+      style_atom = unquote(style_atom)
+      quote do: {unquote(style_atom), [unquote line]}
+    end
   end
 
-  def list(acc \\ [], type, content)
+  def header(headers), do: {:header, headers}
+  def th(headers),     do: {:header, headers}
 
-  def list(acc, :bullet, do: content) when is_list(content) do
-    [{:ul, Enum.reverse content} | acc]
-  end
-  def list(acc, :bullet, do: content) do
-    [{:ul, content} | acc]
-  end
-
-  def list(acc, :number, do: content) when is_list(content) do
-    [{:ol, Enum.reverse content} | acc]
-  end
-  def list(acc, :number, do: content) do
-    [{:ol, content} | acc]
-  end
-
-  def item(acc \\ [], content)
-
-  def item(acc, do: content) when is_list(content) do
-    [{:li, Enum.reverse content} | acc]
-  end
-  def item(acc, do: content) do
-    [{:li, content} | acc]
-  end
-
-  def table(acc \\ [], content)
-
-  def table(acc, do: content), do: [{:table, Enum.reverse content} | acc]
-  def table(acc, do: content), do: [{:table,              content} | acc]
-
-  def header(acc \\ [], list), do: [{:th, list} | acc]
-  def row(   acc \\ [], list), do: [{:td, list} | acc]
+  def row(data), do: {:row, data}
+  def td(data),  do: {:row, data}
 end

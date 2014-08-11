@@ -2,7 +2,7 @@ defmodule Tasks.Hip.InitTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
-  setup_all do
+  setup do
     on_exit fn ->
       TestHelper.clean
     end

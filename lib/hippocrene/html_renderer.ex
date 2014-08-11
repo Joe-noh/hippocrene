@@ -1,57 +1,51 @@
 defmodule Hippocrene.HtmlRenderer do
-  alias Hippocrene.Article
 
-  def render(%Article{title: title, date: date, body: body}) do
-    "<h2>#{title}</h2>\n<div>#{render body, 3}</div>"
+  def render([title: title, date: _date, author: author, body: body]) do
+    "<h2>#{title}</h2>\n<p>#{author}</p><div>#{render body, 3}</div>"
   end
 
-  defp render([head | rest], h_num) do
-    "#{render head, h_num}#{render rest, h_num}"
+  defp render([{:par, content} | rest], n) do
+    "<p>#{render content, n}</p>\n#{render rest, n}"
   end
 
-  defp render({:section, section_title, content}, h_num) do
-    n = h_num
-    "<h#{n}>#{section_title}</h#{n}>\n<div>\n#{render content, n+1}\n</div>"
+  defp render([{:cite, content} | rest], n) do
+    "<blockquote>#{render content, n}</blockquote>\n#{render rest, n}"
   end
 
-  defp render({:par, content}, h_num) do
-    "<p>#{render content, h_num}</p>"
+  defp render([{:item, content} | rest], n) do
+    "<li>#{render content, n}</li>\n#{render rest, n}"
   end
 
-  defp render({:code, language, content}, h_num) do
-    "<pre class='#{language}'><code>\n#{render content, h_num}\n</code></pre>"
+  defp render([{:table, content} | rest], n) do
+    "<table>#{render content, n}</table>\n#{render rest, n}"
   end
 
-  defp render({:cite, content}, h_num) do
-    "<blockquote>\n#{render content, h_num}\n</blockquote>"
+  defp render([{:section, section_title, content} | rest], n) do
+    "<h#{n}>#{section_title}</h#{n}><div>#{render content, n+1}</div>\n#{render rest, n}"
   end
 
-  defp render({:ul, content}, h_num) do
-    "<ul>\n#{render content, h_num}\n</ul>"
+  defp render([{:code, lang, content} | rest], n) do
+    "<pre class='#{lang}'><code>#{render content, n}</code></pre>\n#{render rest, n}"
   end
 
-  defp render({:ol, content}, h_num) do
-    "<ol>\n#{render content, h_num}\n</ol>"
+  defp render([{:bullet, content} | rest], n) do
+    "<ul>#{render content, n}</ul>\n#{render rest, n}"
   end
 
-  defp render({:li, content}, h_num) do
-    "<li>#{render content, h_num}</li>"
+  defp render([{:numbered, content} | rest], n) do
+    "<ol>#{render content, n}</ol>\n#{render rest, n}"
   end
 
-  defp render({:table, content}, h_num) do
-    "<table>\n#{render content, h_num}\n</table>"
+  defp render([{:header, content} | rest], n) do
+    ths = List.foldl content, "", fn (th, acc) -> acc <> "<th>#{th}</th>" end
+    "<tr>#{ths}</tr>\n#{render rest, n}"
   end
 
-  defp render({:th, list}, h_num) do
-    ths = Enum.map(list, fn (item) -> "<th>#{item}</th>" end) |> Enum.join("\n")
-    "<tr>\n#{ths}\n</tr>"
+  defp render([{:row, content} | rest], n) do
+    tds = List.foldl content, "", fn (td, acc) -> acc <> "<td>#{td}</td>" end
+    "<tr>#{tds}</tr>\n#{render rest, n}"
   end
 
-  defp render({:td, list}, h_num) do
-    tds = Enum.map(list, fn (item) -> "<td>#{item}</td>" end) |> Enum.join("\n")
-    "<tr>\n#{tds}\n</tr>"
-  end
-
-  defp render(content, _) when is_binary(content), do: content
-  defp render([], _), do: ""
+  defp render([],   _), do: ""
+  defp render(list, _), do: Enum.join(list, "\n")
 end
