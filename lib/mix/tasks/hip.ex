@@ -4,26 +4,30 @@ defmodule Mix.Tasks.Hip do
   @moduledoc """
   This runs following hippocrene tasks
 
-  * mix hip init    # Arrange for directory structurea WIP
-  * mix hip make    # Compile files to HTML WIP
-  * mix hip serve   # Build local server and watch files WIP
-  * mix hip deploy  # Deploy to somewhere WIP
+  * mix hip init     # Arrange for directory structurea WIP
+  * mix hip compile  # Compile files to HTML WIP
+  * mix hip serve    # Build local server and watch files WIP
+  * mix hip deploy   # Deploy to somewhere WIP
 
   Shortened name can be allowed. i.e,
 
       mix hip s  #=> mix hip serve
   """
 
-  # oh crasy. the power of editor
+  # oh crazy. the power of editor
+  # TODO: utilize macro
   def run(["i"    | _]), do: Mix.Tasks.Hip.Init.run []
   def run(["in"   | _]), do: Mix.Tasks.Hip.Init.run []
   def run(["ini"  | _]), do: Mix.Tasks.Hip.Init.run []
   def run(["init" | _]), do: Mix.Tasks.Hip.Init.run []
 
-  def run(["m"    | _]), do: Mix.Tasks.Hip.Make.run []
-  def run(["ma"   | _]), do: Mix.Tasks.Hip.Make.run []
-  def run(["mak"  | _]), do: Mix.Tasks.Hip.Make.run []
-  def run(["make" | _]), do: Mix.Tasks.Hip.Make.run []
+  def run(["c"       | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["co"      | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["com"     | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["comp"    | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["compi"   | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["compil"  | _]), do: Mix.Tasks.Hip.Compile.run []
+  def run(["compile" | _]), do: Mix.Tasks.Hip.Compile.run []
 
   def run(["s"     | _]), do: Mix.Tasks.Hip.Serve.run []
   def run(["se"    | _]), do: Mix.Tasks.Hip.Serve.run []

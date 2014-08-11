@@ -7,7 +7,11 @@ defmodule Hippocrene.Article do
 
   def author(author), do: {:author, author}
 
-  @tags [:begin, :body, :par, :cite, :code, :item, :table]
+  defmacro begin(do: {:__block__, _, blocks}), do: blocks
+  defmacro begin(do: blocks), do: blocks
+  defmacro begin(blocks), do: blocks
+
+  @tags [:body, :par, :cite, :code, :item, :table]
   Enum.each @tags, fn (tag) ->
     defmacro unquote(tag)(do: {:__block__, _, blocks}) do
       tag = unquote(tag)
