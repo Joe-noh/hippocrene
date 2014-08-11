@@ -4,6 +4,7 @@ defmodule HtmlRendererTest do
   alias Hippocrene.Article
   alias Hippocrene.HtmlRenderer
 
+  ~S"""
   test "section" do
     rendered = render_partial {:section, "Section 1", "content"}
     expected = "<h3>Section 1</h3>\n<div>\ncontent\n</div>"
@@ -79,4 +80,5 @@ defmodule HtmlRendererTest do
     |> String.replace(~r"\A.+?<div>"sm, "")
     |> String.replace(~r"</div>\z", "")
   end
+  """
 end

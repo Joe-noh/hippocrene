@@ -1,6 +1,7 @@
 defmodule Hippocrene.HtmlRenderer do
   alias Hippocrene.Article
 
+  ~S"""
   def render(%Article{title: title, date: date, body: body}) do
     "<h2>#{title}</h2>\n<div>#{render body, 3}</div>"
   end
@@ -54,4 +55,6 @@ defmodule Hippocrene.HtmlRenderer do
 
   defp render(content, _) when is_binary(content), do: content
   defp render([], _), do: ""
+
+  """
 end
