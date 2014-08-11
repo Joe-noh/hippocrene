@@ -29,7 +29,7 @@ defmodule Mix.Tasks.Hip do
   def run(["compil"  | _]), do: Mix.Tasks.Hip.Compile.run []
   def run(["compile" | _]), do: Mix.Tasks.Hip.Compile.run []
 
-  def run(["s"     | _]), do: Mix.Tasks.Hip.Serve.run []
+  def run(["s"     | _]), do: Mix.Task.run("hip.serve", ["--no-halt"])
   def run(["se"    | _]), do: Mix.Tasks.Hip.Serve.run []
   def run(["ser"   | _]), do: Mix.Tasks.Hip.Serve.run []
   def run(["serv"  | _]), do: Mix.Tasks.Hip.Serve.run []

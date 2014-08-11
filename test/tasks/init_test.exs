@@ -4,7 +4,6 @@ defmodule Tasks.Hip.InitTest do
 
   setup do
     on_exit fn ->TestHelper.clean end
-    :ok
   end
 
   test "make directories" do
