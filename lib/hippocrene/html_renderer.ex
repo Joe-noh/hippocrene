@@ -1,6 +1,12 @@
 defmodule Hippocrene.HtmlRenderer do
+  alias Hippocrene.Article
+  alias Hippocrene.Config
 
-  def render([title: title, date: _date, author: author, body: body]) do
+  def render(article) do
+    title  = Dict.get(article, :title, "")
+    date   = Dict.get(article, :date)
+    author = Dict.get(article, :author, Config.get(:default_author))
+    body   = Dict.get(article, :body, [])
     "<h2>#{title}</h2>\n<p>#{author}</p><div>#{render body, 3}</div>"
   end
 

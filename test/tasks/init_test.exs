@@ -16,7 +16,6 @@ defmodule Tasks.Hip.InitTest do
     assert File.dir?("./src/assets/css")
     assert File.dir?("./src/assets/img")
 
-    assert File.regular?("./src/config.exs")
     assert File.regular?("./src/articles/example.exs")
     assert File.regular?("./src/assets/css/normalize.css")
     assert File.regular?("./src/assets/js/jquery.min.js")
@@ -27,5 +26,11 @@ defmodule Tasks.Hip.InitTest do
     message = capture_io :stderr, fn -> Mix.Tasks.Hip.Init.run [] end
 
     assert message =~ "already exist"
+  end
+
+  test "overwrite config/config.exs" do
+    content = File.read!("./config/config.exs")
+
+    assert content =~ "John Doe"
   end
 end
