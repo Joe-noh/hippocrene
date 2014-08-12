@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Hip.Compile do
   alias Hippocrene.HtmlRenderer
 
   def run(_) do
-    if not File.exists?("./site") do
+    unless File.exists?("./site") do
       File.mkdir! "./site"
     end
 

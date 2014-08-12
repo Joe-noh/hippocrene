@@ -1,4 +1,6 @@
 %{"cowboy": {:package, "1.0.0"},
   "cowlib": {:package, "1.0.0"},
+  "erlfsmon": {:git, "git://github.com/proger/erlfsmon.git", "12759ab5e531d89768e14078f130daf9e5969749", []},
+  "erlsh": {:git, "https://github.com/proger/erlsh", "490aa8f2ce80810d7aa3c0125c9fb34706004d70", [ref: "HEAD"]},
   "plug": {:package, "0.5.3"},
   "ranch": {:package, "1.0.0"}}

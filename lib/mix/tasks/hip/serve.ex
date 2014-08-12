@@ -5,6 +5,9 @@ defmodule Mix.Tasks.Hip.Serve do
     Mix.Tasks.Hip.Compile.run []
 
     Plug.Adapters.Cowboy.http Hippocrene.FileServer, []
+    Mix.Shell.IO.info "Go! Go! http://localhost:4000!"
+
+    Hippocrene.FileWatcher.start
     unless iex_running?, do: :timer.sleep :infinity
   end
 
