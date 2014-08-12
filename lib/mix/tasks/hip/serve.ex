@@ -5,9 +5,7 @@ defmodule Mix.Tasks.Hip.Serve do
     Mix.Tasks.Hip.Compile.run []
 
     Plug.Adapters.Cowboy.http Hippocrene.FileServer, []
-    unless iex_running? do
-      :timer.sleep :infinity
-    end
+    unless iex_running?, do: :timer.sleep :infinity
   end
 
   defp iex_running? do
@@ -15,14 +13,3 @@ defmodule Mix.Tasks.Hip.Serve do
   end
 end
 
-defmodule Hippocrene.FileServer do
-  use Plug.Builder
-  import Plug.Conn
-
-  plug Plug.Static, at: "/", from: "./site"
-  plug :not_found
-
-  def not_found(conn, _) do
-    send_resp conn, 404, "Not Found"
-  end
-end
