@@ -16,7 +16,6 @@ defmodule Tasks.Hip.InitTest do
     assert File.dir?("./src/assets/css")
     assert File.dir?("./src/assets/img")
 
-    assert File.regular?("./src/config.exs")
     assert File.regular?("./src/articles/example.exs")
     assert File.regular?("./src/assets/css/normalize.css")
     assert File.regular?("./src/assets/js/jquery.min.js")
