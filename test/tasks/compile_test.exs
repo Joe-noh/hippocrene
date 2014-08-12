@@ -1,9 +1,8 @@
 defmodule Tasks.Hip.CompileTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   setup do
     on_exit fn -> TestHelper.clean end
-    :ok
   end
 
   test "generate site directory" do
