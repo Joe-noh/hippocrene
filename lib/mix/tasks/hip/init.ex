@@ -21,8 +21,11 @@ defmodule Mix.Tasks.Hip.Init do
   end
 
   defp initialize_config_file do
-    File.write! "./src/config.exs", """
-    skel
+    File.write! "./config/config.exs", """
+    use Mix.Config
+
+    config :hippocrene,
+      default_author: "John Doe"
     """
   end
 
